@@ -1,0 +1,19 @@
+{
+  "port": 3000,
+  "log4js": {
+    "appenders": {
+      "file": {
+        "type": "file", "filename": "./logs.log"
+      },
+      "console": {
+        "type": "console"
+      }
+    },
+    "categories": {
+      "default":      { "appenders": ["console", "file"],   "level": "info" },
+      "auth":         { "appenders": ["console", "file"],   "level": "info" },
+      "substitution": { "appenders": ["console", "file"],   "level": "info" },
+      "catho":        { "appenders": ["console", "file"],   "level": "info" }
+    }
+  }
+}
