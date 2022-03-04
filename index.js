@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/auth', require('./routes/auth'))
-app.use('/substitution', require('./routes/auth'))
+app.use('/substitution', require('./routes/substitution'))
 app.use('/catho', require('./routes/catho'))
 
 app.listen( config.port, () => logger.info('Server listening on port %d', config.port) )

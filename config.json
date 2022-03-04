@@ -1,4 +1,10 @@
 {
+  "subjects": [
+  ],
+  "teachers": [
+  ],
+  "substitutionTypes": [
+  ],
   "port": 3000,
   "log4js": {
     "appenders": {
