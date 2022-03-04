@@ -9,10 +9,12 @@ const logger = log4js.getLogger('substitution')
 // TODO replace with database
 let profiles = []
 
+//TODO remove this
 function randomNumber(min, max){
     return Math.floor(Math.random() * (max - min) + min)
 }
 
+//TODO remove this
 function randomLetter() {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
