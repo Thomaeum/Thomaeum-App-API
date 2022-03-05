@@ -2,66 +2,75 @@
  * This Router handles all Requests send to /auth
  * @type {Router}
  */
-
+const hash = require('object-hash');
 const router = require('express').Router();
 const logger = log4js.getLogger('substitution')
 
 // TODO replace with database
 let profiles = []
-
-//TODO remove this
-function randomNumber(min, max){
-    return Math.floor(Math.random() * (max - min) + min)
-}
-
-//TODO remove this
-function randomLetter() {
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-    return alphabet[Math.floor(Math.random() * alphabet.length)]
-}
+let generatedEntrys = 0
 
 router.get('/', (req, res) => {
     logger.info("Got request for substitution plan")
 
-    //TODO replace with database request
     let result = []
-    let amount = 10
 
-    for (let i = 0; i < amount; i++) {
-        result.push({
+    //region Should be replaced by Database querry
+    let amount = 10
+    function getRandomEntry(){
+        function randomNumber(min, max){
+            return Math.floor(Math.random() * (max - min) + min)
+        }
+
+        function randomLetter() {
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+            return alphabet[Math.floor(Math.random() * alphabet.length)]
+        }
+
+        generatedEntrys++
+
+        return {
             start: randomNumber(1,6), //TODO check if this format is correct
             range: randomNumber(1,2), //TODO check if this format is correct
             regularCourse: {
-                subject: config.subjects[randomNumber(0,config.subjects.length)],
-                courseID: i,
-                courseType: Boolean(randomNumber(0,1))
+                subject: req.query.subject || config.subjects[randomNumber(0,config.subjects.length)],
+                courseID: req.query.courseID || generatedEntrys,
+                courseType: req.query.courseID || Boolean(randomNumber(0,1))
             },
             changedCourse: {
-                teacher: config.teachers[randomNumber(0,config.teachers.length)],
+                teacher: req.query.teacher || config.teachers[randomNumber(0,config.teachers.length)],
                 room: randomNumber(0,1000) + randomLetter(),
                 subject: {
                     subject: config.subjects[randomNumber(0, config.subjects.length)],
-                    courseID: i + amount,
+                    courseID: generatedEntrys + amount,
                     courseType: Boolean(randomNumber(0, 1))
                 },
             },
             annotations: "Haha lol ich kann hier schreiben was ich will :)",
             type: config.substitutionTypes[randomNumber(0,config.substitutionTypes.length)]
-        })
+        }
+    }
+
+    for (let i = 0; i < amount; i++) {
+        result.push(getRandomEntry())
     }
 
     // TODO filter by profile
     // TODO filter by date
     // TODO filter by date range
     // TODO filter by grade
-    // TODO filter by subject
-    // TODO filter by teacher
-    // TODO filter by course ID
-    // TODO filter by course Type
-    // TODO filter with hash
+    //endregion
 
-    res.json(result)
+    let resultsHash = hash(result)
+    if (req.query.lastRequest === undefined || req.query.lastRequest !== resultsHash) {
+        res.json({
+            entries: result,
+            hash: resultsHash
+        })
+    } else {
+        res.send(412)
+    }
 })
 
 router.post('/register', (req, res) => {
