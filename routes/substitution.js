@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
     let amount = 10
     function getRandomEntry(){
         function randomNumber(min, max){
-            return Math.floor(Math.random() * (max - min + 1) + min)
+            return Math.floor(Math.random() * (max - min) + min)
         }
 
         function randomLetter() {
@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
 
         return {
             start: randomNumber(1,6), //TODO check if this format is correct
-            range: randomNumber(1,2), //TODO check if this format is correct
+            range: randomNumber(1,3), //TODO check if this format is correct
             regularCourse: {
                 subject: req.query.subject || config.subjects[randomNumber(0,config.subjects.length)],
                 courseID: req.query.courseID || generatedEntrys,
