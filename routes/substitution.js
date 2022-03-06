@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
     let amount = 10
     function getRandomEntry(){
         function randomNumber(min, max){
-            return Math.floor(Math.random() * (max - min) + min)
+            return Math.floor(Math.random() * (max - min + 1) + min)
         }
 
         function randomLetter() {
