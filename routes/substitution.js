@@ -31,8 +31,8 @@ router.get('/', (req, res) => {
         generatedEntrys++
 
         return {
-            start: randomNumber(1,6), //TODO check if this format is correct
-            range: randomNumber(1,3), //TODO check if this format is correct
+            start: Date.now() + 86400000 * randomNumber(1,4),   //TODO check if this format is correct (using Timestamp in MS)
+            range: randomNumber(1,3) * 45 * 60 * 1000,          //TODO check if this format is correct (using duration in MS)
             regularCourse: {
                 subject: req.query.subject || config.subjects[randomNumber(0,config.subjects.length)],
                 courseID: req.query.courseID || generatedEntrys,
