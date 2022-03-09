@@ -17,10 +17,12 @@ router.get('/', (req, res) => {
 
     //region Should be replaced by Database querry
     let amount = 10
-    function getRandomEntry(){
-        function randomNumber(min, max){
+
+    function getRandomEntry() {
+        function randomNumber(min, max) {
             return Math.floor(Math.random() * (max - min) + min)
         }
+
 
         function randomLetter() {
             const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -31,16 +33,17 @@ router.get('/', (req, res) => {
         generatedEntrys++
 
         return {
-            start: Date.now() + 86400000 * randomNumber(1,4),   //TODO check if this format is correct (using Timestamp in MS)
-            range: randomNumber(1,3) * 45 * 60 * 1000,          //TODO check if this format is correct (using duration in MS)
+            date: Date.now().valueOf() + (86400000 * randomNumber(0, 3)),
+            start: randomNumber(1, 13),
+            duration: randomNumber(1, 3),
             regularCourse: {
-                subject: req.query.subject || config.subjects[randomNumber(0,config.subjects.length)],
+                subject: req.query.subject || config.subjects[randomNumber(0, config.subjects.length)],
                 courseID: req.query.courseID || generatedEntrys,
-                courseType: req.query.courseID || Boolean(randomNumber(0,1))
+                courseType: req.query.courseID || Boolean(randomNumber(0, 1))
             },
             changedCourse: {
-                teacher: req.query.teacher || config.teachers[randomNumber(0,config.teachers.length)],
-                room: randomNumber(0,1000) + randomLetter(),
+                teacher: req.query.teacher || config.teachers[randomNumber(0, config.teachers.length)],
+                room: randomNumber(0, 1000) + randomLetter(),
                 subject: {
                     subject: config.subjects[randomNumber(0, config.subjects.length)],
                     courseID: generatedEntrys + amount,
@@ -48,7 +51,7 @@ router.get('/', (req, res) => {
                 },
             },
             annotations: "Haha lol ich kann hier schreiben was ich will :)",
-            type: config.substitutionTypes[randomNumber(0,config.substitutionTypes.length)]
+            type: config.substitutionTypes[randomNumber(0, config.substitutionTypes.length)]
         }
     }
 
@@ -96,7 +99,7 @@ router.post('/register', (req, res) => {
     profiles[profiles.length] = profile
 
     res.json({
-        id: profiles.length-1
+        id: profiles.length - 1
     })
 })
 
